@@ -4,6 +4,7 @@ import random
 import matplotlib.pyplot as plt
 import networkx as nx
 import os
+import sys
 import numpy as np
 
 class Karate_club(object):
@@ -58,7 +59,22 @@ class Karate_club(object):
         return {'total_classes' : nb_classes, 'targets' : targets, 'one_hot' : one_hot_targets}
 
 
-class Cora(object):
+class loader(object):
+
+    @staticmethod
+    def parse_index_file(filename):
+        """Parse index file."""
+        index = []
+        for line in open(filename):
+            index.append(int(line.strip()))
+        return index
+
+    @staticmethod
+    def sample_mask(idx, l):
+        """Create mask."""
+        mask = np.zeros(l)
+        mask[idx] = 1
+        return np.array(mask, dtype=np.bool)
 
     @staticmethod
     def load_data(dataset_str): # {'pubmed', 'citeseer', 'cora'}
@@ -73,7 +89,7 @@ class Cora(object):
                     objects.append(pkl.load(f))
 
         x, y, tx, ty, allx, ally, graph = tuple(objects)
-        test_idx_reorder = parse_index_file("./deepnode/Datasets/raw_datasets/ind.{}.test.index".format(dataset_str))
+        test_idx_reorder = loader.parse_index_file("./deepnode/Datasets/raw_datasets/ind.{}.test.index".format(dataset_str))
         test_idx_range = np.sort(test_idx_reorder)
 
         if dataset_str == 'citeseer':
@@ -101,9 +117,9 @@ class Cora(object):
         idx_train = range(len(y))
         idx_val = range(len(y), len(y)+500)
 
-        train_mask = sample_mask(idx_train, labels.shape[0])
-        val_mask = sample_mask(idx_val, labels.shape[0])
-        test_mask = sample_mask(idx_test, labels.shape[0])
+        train_mask = loader.sample_mask(idx_train, labels.shape[0])
+        val_mask = loader.sample_mask(idx_val, labels.shape[0])
+        test_mask = loader.sample_mask(idx_test, labels.shape[0])
 
         y_train = np.zeros(labels.shape)
         y_val = np.zeros(labels.shape)
@@ -118,7 +134,7 @@ class Cora(object):
 
         ################# added section to extract train subgraph ######################
         ids = set(range(labels.shape[0]))
-        train_ids = ids.difference(set(idx_val + idx_test))
+        train_ids = ids.difference(set(list(idx_val) + list(idx_test)))
         # train_edges = [edge for edge in nx_graph.edges() if edge[0] in train_ids and edge[1] in train_ids]
         #
         # adj_train = sparse.dok_matrix((len(ids), len(ids)))
