@@ -1,6 +1,0 @@
-README.md
-setup.py
-DeepNode.egg-info/PKG-INFO
-DeepNode.egg-info/SOURCES.txt
-DeepNode.egg-info/dependency_links.txt
-DeepNode.egg-info/top_level.txt
