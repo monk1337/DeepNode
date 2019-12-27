@@ -3,13 +3,16 @@ import scipy.sparse as sp
 import random
 import matplotlib.pyplot as plt
 import networkx as nx
+import os
 import numpy as np
 
 class Karate_club(object):
     
     @staticmethod
-    def load_data(path = './Datasets/raw_datasets/Karate_club/karate.graphml'):
+    def load_data(path = './deepnode/Datasets/raw_datasets/Karate_club/karate.graphml'):
+
         
+        print(os.getcwd())
         # input as a graphml file
         graph_ = nx.read_graphml(path)
         return graph_
@@ -53,5 +56,3 @@ class Karate_club(object):
         one_hot_targets = np.eye(4)[targets]
         
         return {'total_classes' : nb_classes, 'targets' : targets, 'one_hot' : one_hot_targets}
-
-

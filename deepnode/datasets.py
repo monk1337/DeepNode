@@ -1,1 +1,1 @@
-from . import Datasets
+from .Datasets.graph_datasets import Karate_club
