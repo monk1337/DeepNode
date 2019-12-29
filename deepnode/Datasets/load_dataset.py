@@ -11,6 +11,10 @@ class graph_preprocessing(object):
     
     @staticmethod
     def transform_semi_supervise(labels, mask_nodes_):
+
+        # labels : node labels as list [ 1,2,3,4,5]
+        # mask_nodes : no of nodes will be use for semi-supervised traning let say we have 5 classes total 34 samples then I am using 
+        # 5 labels for ssl setting so mask_nodes will be 5
     
         nb_node_classes = len(set(labels))
         
@@ -61,7 +65,7 @@ class graph_preprocessing(object):
             sparse_mx = to_tuple(sparse_mx)
 
         return sparse_mx
-    
+
     @staticmethod
     def normalize_adj(adj):
         """Symmetrically normalize adjacency matrix."""
@@ -77,6 +81,17 @@ class graph_preprocessing(object):
         """Preprocessing of adjacency matrix for simple GCN model and conversion to tuple representation."""
         adj_normalized = graph_preprocessing.normalize_adj(adj + sp.eye(adj.shape[0]))
         return graph_preprocessing.sparse_to_tuple(adj_normalized)
+
+
+    @staticmethod
+    def preprocess_features(features):
+        """Row-normalize feature matrix and convert to tuple representation"""
+        rowsum = np.array(features.sum(1))
+        r_inv = np.power(rowsum, -1).flatten()
+        r_inv[np.isinf(r_inv)] = 0.
+        r_mat_inv = sp.diags(r_inv)
+        features = r_mat_inv.dot(features)
+        return graph_preprocessing.sparse_to_tuple(features)
 
     
     
