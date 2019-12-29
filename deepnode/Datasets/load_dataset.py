@@ -61,7 +61,7 @@ class graph_preprocessing(object):
             sparse_mx = to_tuple(sparse_mx)
 
         return sparse_mx
-
+    
     @staticmethod
     def normalize_adj(adj):
         """Symmetrically normalize adjacency matrix."""
