@@ -76,6 +76,10 @@ class loader(object):
         mask[idx] = 1
         return np.array(mask, dtype=np.bool)
 
+    
+    ###############################################
+    # This section of code adapted from tkipf/gcn #
+    ###############################################
     @staticmethod
     def load_data(dataset_str): # {'pubmed', 'citeseer', 'cora'}
         """Load data."""
